@@ -12,6 +12,8 @@ document.getElementById('search-btn').addEventListener('click', async () => {
     if (inputValue === '') {
         errorDiv.innerText = "Search field can't be empty!";
         return;
+    } else {
+        errorDiv.innerText = '';
     }
     // console.log(inputValue);
     const response = await fetch( `https://openlibrary.org/search.json?q=${inputValue}` );
@@ -25,18 +27,30 @@ document.getElementById('search-btn').addEventListener('click', async () => {
 
 });
 
+// Get cover img:
+// const coverImg = async source => {
+//     const response = await fetch(`https://covers.openlibrary.org/b/id/${source}-M.jpg`);
+//     const data = await response.json();
+//     console.log(data);
+// }
+
 // Show book details:
 const displayBook = books => {
-    // console.log(books);
+    // console.log(books[0].cover_i); 
     // Clear data
     displayBookDiv.textContent = '';
+
+    // const imgUrl = `https://covers.openlibrary.org/b/id/${books.docs[12].cover_i}-M.jpg`;
+    
     books.forEach(element => {
-        // console.log(element.title);
+        // console.log(element.cover_i);
         const div = document.createElement('div');
+        div.classList.add('col-md-4');
         div.innerHTML = `
-        <h3 class="fs-3">Book name: ${element.title}
-        <p class="fs-6 mb-1">Author name: ${element.author_name[0]}
-        <p class="fs-6">First published: ${element.first_publish_year}
+            <img src="https://covers.openlibrary.org/b/id/${element.cover_i}-M.jpg">
+            <h3 class="fs-3 text-success">Book name: ${element.title}
+            <p class="fs-6 mb-1 text-primary">Author name: ${element.author_name[0] ? element.author_name[0] : ''}
+            <p class="fs-6 text-primary">First published: ${element.first_publish_year ? element.first_publish_year : ''}
     `;
         displayBookDiv.appendChild(div);
     });
